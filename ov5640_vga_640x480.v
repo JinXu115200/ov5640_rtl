@@ -62,7 +62,7 @@ wire		locked			;
 //wire		ov5640_pclk		;
 
 wire		clk_24m			;
-wire		clk_56m			;
+
 //
 ////
 //\* Main Code \//
@@ -74,7 +74,7 @@ assign rst_n = (sys_rst_n & locked);
 //sys_init_done:系统初始化完成(SDRAM初始化+摄像头初始化)
 assign sys_init_done = sdram_init_done & cfg_done;
 
-assign ov5640_xclk = clk_25m;
+assign ov5640_xclk = clk_24m;
  
 //assign ov5640_pclk = clk_56m;
 
@@ -90,7 +90,11 @@ clk_gen clk_gen_inst
 	.locked		(locked)
 );
 
-
+clk_gen_24Mhz	clk_gen_24Mhz_inst (
+	.areset (ov5640_pwdn),
+	.inclk0 ( sys_clk ),
+	.c0 ( clk_24m )
+	);
 
 //------------- ov5640_top_inst -------------
 ov5640_top ov5640_top_inst(
@@ -99,10 +103,10 @@ ov5640_top ov5640_top_inst(
     .sys_rst_n          (rst_n		   ), 	  //复位信号
     .sys_init_done      (sys_init_done ), //系统初始化完成(SDRAM + 摄像头)
 
-    .ov5640_pclk        (ov5640_pclk ),   //摄像头像素时钟
-    .ov5640_href        (ov5640_href ),   //摄像头行同步信号
-    .ov5640_vsync       (ov5640_vsync ),  //摄像头场同步信号
-    .ov5640_data        (ov5640_data ),   //摄像头图像数据
+    .ov5640_pclk        (ov5640_pclk ),      //摄像头像素时钟
+    .ov5640_href        (ov5640_href ),      //摄像头行同步信号
+    .ov5640_vsync       (ov5640_vsync ),     //摄像头场同步信号
+    .ov5640_data        (ov5640_data ),      //摄像头图像数据
 
     .cfg_done           (cfg_done     ),      //寄存器配置完成
     .sccb_scl           (sccb_scl     ),      //SCL

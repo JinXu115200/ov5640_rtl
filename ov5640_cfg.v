@@ -35,7 +35,7 @@ reg     [7:0]   reg_num     ;   //配置寄存器个数
 always@(posedge sys_clk or negedge sys_rst_n)
     if(sys_rst_n == 1'b0)
         cnt_wait    <=  15'd0;
-    else if((cnt_wait < CNT_WAIT_MAX) && power_done == 1'b1)
+    else if((cnt_wait < CNT_WAIT_MAX) )
         cnt_wait    <=  cnt_wait + 1'b1;
 
 //reg_num:配置寄存器个数

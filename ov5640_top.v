@@ -115,7 +115,7 @@ i2c_ctrl_inst
 ov5640_cfg  ov5640_cfg_inst(
 
     .sys_clk        (cfg_clk    ),   //系统时钟,由iic模块传入
-    .sys_rst_n      (sys_rst_n  ),   //系统复位,低有效
+    .sys_rst_n      (power_done  ),   //系统复位,低有效
     .cfg_end        (cfg_end    ),   //单个寄存器配置完成
 	.power_done	    (power_done ),
 
