@@ -3,7 +3,7 @@ module  ov5640_cfg
     input   wire            sys_clk     ,   //系统时钟,由iic模块传入
     input   wire            sys_rst_n   ,   //系统复位,低有效
     input   wire            cfg_end     ,   //单个寄存器配置完成
-	input	wire			power_done	,
+	//input	wire			power_done	,
 	
 
     output  reg             cfg_start   ,   //单个寄存器配置触发信号

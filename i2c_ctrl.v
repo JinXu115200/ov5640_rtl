@@ -121,7 +121,7 @@ always@(posedge i2c_clk or negedge sys_rst_n)
         cnt_bit <=  cnt_bit + 1'b1;
 		
 //ack_cnt_1
- always@(posedge i2c_clk or negedge sys_rst_n)
+  always@(posedge i2c_clk or negedge sys_rst_n)
 	if (sys_rst_n == 1'b0)
 		ack_cnt_1 <= 4'd0;
 	else if (ack_cnt_1 == 4'd3)	
@@ -131,7 +131,7 @@ always@(posedge i2c_clk or negedge sys_rst_n)
 	else if (state == ACK_1 && cnt_i2c_clk == 3)
 		ack_cnt_1 <= ack_cnt_1 + 1'b1;
 	else
-		ack_cnt_1 <= ack_cnt_1;
+		ack_cnt_1 <= ack_cnt_1; 
 
 //ack_cnt_2
 /*always@(posedge i2c_clk or negedge sys_rst_n)
