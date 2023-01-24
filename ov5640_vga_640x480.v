@@ -2,18 +2,18 @@ module ov5640_vga_640x480
 (
     input   wire        sys_clk         , //系统时钟
     input   wire        sys_rst_n       , //系统复位，低电平有效
-	input	wire		sw_1			,
+	input	wire		sw_1			, //Camera power control
     //摄像头接口    
     input   wire        ov5640_pclk     , //摄像头数据像素时钟
     input   wire        ov5640_vsync    , //摄像头场同步信号
     input   wire        ov5640_href     , //摄像头行同步信号
     input   wire [7:0]  ov5640_data     , //摄像头数据
     output  wire        ov5640_rst_n    , //摄像头复位信号，低电平有效
-    output  wire        ov5640_pwdn     , //摄像头时钟选择信号, 1:使用摄像头自带的晶振
+    output  wire        ov5640_pwdn     , //
 	output	wire		ov5640_xclk		, //
     output  wire        sccb_scl        , //摄像头SCCB_SCL线
     inout   wire        sccb_sda        , //摄像头SCCB_SDA线
-	
+	output  wire        sys_init_done   , //系统初始化完成(SDRAM初始化+摄像头初始化)
     //SDRAM接口 
     output wire         sdram_clk       , //SDRAM 时钟
     output wire         sdram_cke       , //SDRAM 时钟使能
@@ -63,7 +63,6 @@ wire [23:0] wr_data         ; //sdram写数据
 wire        rd_en           ; //sdram读使能
 wire [23:0] rd_data         ; //sdram读数据
 wire        sdram_init_done ; //SDRAM初始化完成
-wire        sys_init_done   ; //系统初始化完成(SDRAM初始化+摄像头初始化)
 wire		locked			;
 //wire		ov5640_pclk		;
 wire		power_done		;
