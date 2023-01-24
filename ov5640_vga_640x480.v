@@ -118,7 +118,7 @@ assign rst_n = (sys_rst_n & locked);
 //sys_init_done:系统初始化完成(SDRAM初始化+摄像头初始化)
 assign sys_init_done = sdram_init_done & cfg_done;
 
-assign ov5640_xclk = clk_25m;
+assign ov5640_xclk = clk_24m;
  
 //assign ov5640_pclk = clk_56m;
 
@@ -135,7 +135,7 @@ clk_gen clk_gen_inst
 );
 
 clk_gen_24Mhz	clk_gen_24Mhz_inst (
-	.areset (ov5640_pwdn),
+	.areset (~sys_rst_n),
 	.inclk0 ( sys_clk ),
 	.c0 ( clk_24m )
 	);
