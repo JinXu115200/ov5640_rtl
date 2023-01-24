@@ -13,7 +13,7 @@ module ov5640_vga_640x480
 	output	wire		ov5640_xclk		, //
     output  wire        sccb_scl        , //摄像头SCCB_SCL线
     inout   wire        sccb_sda        , //摄像头SCCB_SDA线
-	output  wire        sys_init_done   , //系统初始化完成(SDRAM初始化+摄像头初始化)
+	//output  wire        sys_init_done   , //系统初始化完成(SDRAM初始化+摄像头初始化)
     //SDRAM接口 
     output wire         sdram_clk       , //SDRAM 时钟
     output wire         sdram_cke       , //SDRAM 时钟使能
@@ -67,6 +67,7 @@ wire		locked			;
 //wire		ov5640_pclk		;
 wire		power_done		;
 wire		clk_24m			;
+wire		sys_init_done	;
 
 //reg	define
 reg [19:0]	cnt_6ms;
