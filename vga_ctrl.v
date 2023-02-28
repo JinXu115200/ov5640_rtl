@@ -41,9 +41,9 @@ parameter	V_TOTAL	=	V_FRONT+V_SYNC+V_BACK+V_ACT;
 assign	vga_sync	 =	1'b1;			//	This pin is unused.
 assign	vga_blank	 =	~((H_Cont<H_BLANK)||(V_Cont<V_BLANK));
 assign	vga_clock	 =	~vga_clk;
-assign	vga_red		 =	(rgb_valid == 1'b1) ? {pix_data [15:11], pix_data [15:13]} : 8'b0 ;
-assign	vga_green	 =	(rgb_valid == 1'b1) ? {pix_data [10:5], pix_data [10:9]}   : 8'b0 ;
-assign	vga_blue	 =	(rgb_valid == 1'b1) ? {pix_data [4:0], pix_data [4:2]}   : 8'b0 ;
+assign	vga_red		 =	(rgb_valid == 1'b1) ? {pix_data [15:11], 3'b000} : 8'b0 ;
+assign	vga_green	 =	(rgb_valid == 1'b1) ? {pix_data [10:5], 2'b00}   : 8'b0 ;
+assign	vga_blue	 =	(rgb_valid == 1'b1) ? {pix_data [4:0], 3'b000}   : 8'b0 ;
 assign	address		 =	pix_y*H_ACT+pix_x;
 assign	rgb_valid	 =	((H_Cont>=H_BLANK && H_Cont<H_TOTAL)&&(V_Cont>=V_BLANK && V_Cont<V_TOTAL));
 assign  pix_data_req =	((H_Cont>=H_BLANK -1'b1 && H_Cont<H_TOTAL - 1'b1)&&(V_Cont>=V_BLANK && V_Cont<V_TOTAL));
