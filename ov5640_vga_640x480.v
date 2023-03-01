@@ -46,9 +46,7 @@ module ov5640_vga_640x480
 //parameter define
 parameter H_PIXEL = 24'd640 ; //水平方向像素个数,用于设置SDRAM缓存大小
 parameter V_PIXEL = 24'd480 ; //垂直方向像素个数,用于设置SDRAM缓存大小
-parameter	CNT_6MS  = 20'd300_000;
-parameter	CNT_2MS  = 18'd100_000;
-parameter	CNT_21MS = 22'd1_050_000;
+
 
 
 
@@ -69,43 +67,17 @@ wire		power_done		;
 wire		clk_24m			;
 wire		sys_init_done	;
 
-//reg	define
-reg [19:0]	cnt_6ms;
-reg	[17:0]	cnt_2ms;
-reg	[21:0]	cnt_21ms;
 
-//cnt_6ms
-always@(posedge sys_clk or negedge sys_rst_n)
-	if (sys_rst_n == 1'b0)
-		cnt_6ms <= 19'd0;
-	else if (ov5640_pwdn == 1'b1 && sw_1 == 1'b1)
-		cnt_6ms <= cnt_6ms + 1'b1;
-	else
-		cnt_6ms <= cnt_6ms;
 
-assign ov5640_pwdn = (sys_rst_n== 1'b1 && cnt_6ms <= CNT_6MS)? 1'b1 : 1'b0;
 
+
+//assign ov5640_pwdn = (sys_rst_n== 1'b1 && cnt_6ms <= CNT_6MS)? 1'b1 : 1'b0;
+assign ov5640_pwdn = 1'b0;
 //cnt_2ms
-always@(posedge sys_clk or negedge sys_rst_n)
-	if (sys_rst_n == 1'b0)
-		cnt_2ms <= 17'd0;
-	else if (ov5640_pwdn == 1'b0 && ov5640_rst_n == 1'b0)
-		cnt_2ms <= cnt_2ms + 1'b1;
-	else	
-		cnt_2ms <= cnt_2ms;
-		
-assign ov5640_rst_n = (cnt_2ms >= CNT_2MS && sys_rst_n == 1'b1) ? 1'b1 : 1'b0;
 
-//cnt_21ms
-always@(posedge sys_clk or  negedge sys_rst_n)
-	if (sys_rst_n == 1'b0)
-		cnt_21ms <= 21'd0;
-	else if (ov5640_rst_n == 1'b1 && power_done == 1'b0)
-		cnt_21ms <= cnt_21ms + 1'b1;
-	else
-		cnt_21ms <= cnt_21ms;
 		
-assign power_done = (cnt_21ms >= CNT_21MS && sys_rst_n == 1'b1) ? 1'b1 : 1'b0;
+//assign ov5640_rst_n = (cnt_2ms >= CNT_2MS && sys_rst_n == 1'b1) ? 1'b1 : 1'b0;
+assign ov5640_rst_n = 1'b1;
 
 //
 ////
@@ -117,10 +89,6 @@ assign rst_n = (sys_rst_n & locked);
 
 //sys_init_done:系统初始化完成(SDRAM初始化+摄像头初始化)
 assign sys_init_done = sdram_init_done & cfg_done;
-
-assign ov5640_xclk = clk_24m;
- 
-//assign ov5640_pclk = clk_56m;
 
 //------------- clk_gen_inst -------------
 clk_gen clk_gen_inst
@@ -134,17 +102,19 @@ clk_gen clk_gen_inst
 	.locked		(locked)
 );
 
-clk_gen_24Mhz	clk_gen_24Mhz_inst (
-	.areset (~sys_rst_n),
+clk_gen_test	clk_gen_test_inst (
+	.areset ( ~sys_rst_n ),
 	.inclk0 ( sys_clk ),
-	.c0 ( clk_24m )
+	.c0 ( )
 	);
+
+
 
 //------------- ov5640_top_inst -------------
 ov5640_top ov5640_top_inst(
 
     .sys_clk            (clk_25m 	   ), 	  //系统时钟
-    .sys_rst_n          (power_done	   ), 	  //复位信号
+    .sys_rst_n          (rst_n   	   ), 	  //复位信号
     .sys_init_done      (sys_init_done ), 	  //系统初始化完成(SDRAM + 摄像头)
 
     .ov5640_pclk        (ov5640_pclk ),      //摄像头像素时钟
